@@ -1,1 +1,9 @@
-Hello
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.yannick.app",
+    "sha256_cert_fingerprints":
+    ["F8:84:87:8C:BD:F0:DF:93:6E:14:7C:CA:67:EF:D4:1E:08:8A:2F:42:20:BB:5A:06:0A:C0:A6:FF:F9:09:E1:E3"]
+  }
+}]
