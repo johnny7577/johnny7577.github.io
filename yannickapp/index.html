@@ -43,10 +43,10 @@
             // 嘗試打開 app
             window.location = appLink;
 
-            // 如果 app 沒有安裝，則在 100 毫秒後跳轉到對應的商店
+            // 如果 app 沒有安裝，則在 1.5 秒後跳轉到對應的商店
             setTimeout(function() {
                 window.location = storeLink;
-            }, 100);  // 100 毫秒延遲，給 app 足夠的時間打開
+            }, 1500);  // 1.5 秒延遲，給 app 足夠的時間打開
         };
     </script>
 </body>
