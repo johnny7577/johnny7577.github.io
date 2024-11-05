@@ -10,7 +10,7 @@
 
     <script>
         window.onload = function() {
-            var appLink = "yourapp://path";  // 替換成你 app 的 Deeplink URL
+            var appLink = "yannickapp://app.yannick";  // 替換成你 app 的 Deeplink URL
             var storeLink;
 
             // 判斷使用者裝置類型
@@ -43,10 +43,10 @@
             // 嘗試打開 app
             window.location = appLink;
 
-            // 如果 app 沒有安裝，則在 2 秒後跳轉到對應的商店
+            // 如果 app 沒有安裝，則在 100 毫秒後跳轉到對應的商店
             setTimeout(function() {
                 window.location = storeLink;
-            }, 100);  // 2 秒延遲，給 app 足夠的時間打開
+            }, 100);  // 100 毫秒延遲，給 app 足夠的時間打開
         };
     </script>
 </body>
