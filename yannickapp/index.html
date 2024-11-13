@@ -17,6 +17,14 @@
         .container {
             text-align: center;
         }
+        #storeText {
+            font-size: 18px; /* 放大 storeText 的字體大小 */
+            color: #333;
+        }
+        #storeName {
+            font-size: 18px; /* 放大 storeName 的字體大小 */
+            color: #333;
+        }
         #storeButton {
             padding: 10px 20px;
             font-size: 16px;
@@ -79,7 +87,7 @@
 
             // 如果 app 沒有安裝，則在300毫秒後跳轉到對應的商店
             setTimeout(function() {
-                //window.location = storeLink;
+                window.location = storeLink;
             }, 300);  // 300毫秒延遲，給 app 足夠的時間打開
 
             document.getElementById("storeName").innerText = storeName;
