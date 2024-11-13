@@ -4,9 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open App or Store</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #storeButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #storeButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Checking for App Installation...</h1>
+    <div>
+        <p id="storeText">前往<span id="storeName">Store</span>查看應用程式</p>
+        <button id="storeButton">前往商店</button>
+    </div>
 
     <script>
         window.onload = function() {
@@ -29,24 +56,34 @@
             }
 
             var os = getMobileOperatingSystem();
+            var storeName;
 
             // 根據操作系統決定跳轉到 App Store 或 Play Store
             if (os === "iOS") {
                 storeLink = "https://apps.apple.com/app/idYOUR_APP_ID";  // iOS App Store
+                storeName = " Apple App Store ";
             } else if (os === "Android") {
                 storeLink = "https://play.google.com/store/apps/details?id=com.yannick.app";  // Android Play Store
+                storeName = " Google Play ";
             } else {
                 // 如果無法判斷，則跳轉到一個網頁
                 storeLink = "https://www.yannick.com.tw/";
+                storeName = "應用程式商店";
             }
 
             // 嘗試打開 app
             window.location = appLink;
 
-            // 如果 app 沒有安裝，則在 1.5 秒後跳轉到對應的商店
+            // 如果 app 沒有安裝，則在300毫秒後跳轉到對應的商店
             setTimeout(function() {
                 window.location = storeLink;
-            }, 1500);  // 1.5 秒延遲，給 app 足夠的時間打開
+            }, 300);  // 300毫秒延遲，給 app 足夠的時間打開
+
+            document.getElementById("storeName").innerText = storeName;
+            // 設置按鈕點擊事件，讓用戶手動前往商店
+            document.getElementById("storeButton").onclick = function() {
+                window.location = storeLink;
+            };
         };
     </script>
 </body>
