@@ -63,7 +63,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.5</footer>
+    <footer>v1.6</footer>
     
     <script>
         window.onload = function() {
@@ -126,11 +126,14 @@
                      if (!appOpened) {
                          window.location = storeLink;
                      }
-                }, 300); 
+                }, 500); 
             };
 
-            window.addEventListener('blur', function() {
-                 appOpened = true;
+             // 使用 visibilitychange 判斷是否成功打開 app
+            document.addEventListener("visibilitychange", function() {
+                if (document.visibilityState === "hidden") {
+                    appOpened = true;
+                }
             });
         };
     </script>
