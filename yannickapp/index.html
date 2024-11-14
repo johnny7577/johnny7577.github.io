@@ -63,7 +63,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.3</footer>
+    <footer>v1.4</footer>
     
     <script>
         window.onload = function() {
@@ -119,15 +119,14 @@
 
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
             document.getElementById("openButton").onclick = function() {
-                var now = new Date().valueOf();
+                var start = new Date().valueOf();
                 
                 window.location = appLink;
 
                  setTimeout(function() {
-                     if (new Date().valueOf() - now < 100) {
-                          window.location = storeLink;
-                     }
-                }, 100); 
+                     if (new Date().valueOf() - start > 100) return;
+                     window.location = storeLink;
+                }, 50); 
             };
             
         };
