@@ -63,18 +63,9 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.7</footer>
+    <footer>v1.8</footer>
     
     <script>
-        var appOpened = false;
-        
-        // 使用 visibilitychange 判斷是否成功打開 app
-        document.addEventListener("visibilitychange", function() {
-            if (document.visibilityState === "hidden") {
-                appOpened = true;
-            }
-        });
-        
         window.onload = function() {
             var appLink = "yannickapp://app.yannick";  // 替換成你 app 的 Deeplink URL
             var storeLink;
@@ -127,13 +118,10 @@
 
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
             document.getElementById("openButton").onclick = function() {
-                appOpened = false;
                 window.location = appLink;
 
                  setTimeout(function() {
-                     if (!appOpened) {
-                         window.location = storeLink;
-                     }
+                      window.location = storeLink;
                 }, 500); 
             };
 
