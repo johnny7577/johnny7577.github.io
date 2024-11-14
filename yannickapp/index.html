@@ -120,7 +120,9 @@
 
             // 使用 visibilitychange 判斷是否成功打開 app
             document.addEventListener("visibilitychange", function() {
-                if (document.visibilityState === "hidden") {
+                if (document.visibilityState === "visible") {
+                    appOpened = false;
+                } else if (document.visibilityState === "hidden") {
                     appOpened = true;
                 }
             });
