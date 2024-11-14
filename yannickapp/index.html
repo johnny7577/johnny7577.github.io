@@ -63,7 +63,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.0</footer>
+    <footer>v1.1</footer>
     
     <script>
         window.onload = function() {
@@ -122,20 +122,10 @@
                 window.location = appLink;
 
                  setTimeout(function() {
-                    if (!appOpened) {
-                        window.location = storeLink;
-                    }
-                }, 300); 
+                   window.location = storeLink;
+                }, 1500); 
             };
-
-            // 使用 visibilitychange 判斷是否成功打開 app
-            document.addEventListener("visibilitychange", function() {
-                if (document.visibilityState === "visible") {
-                    appOpened = false;
-                } else if (document.visibilityState === "hidden") {
-                    appOpened = true;
-                }
-            });
+            
         };
     </script>
 </body>
