@@ -114,11 +114,7 @@
 
                 //如果 app 沒有安裝，則在300毫秒後跳轉到對應的商店
                 setTimeout(function() {
-                    window.location = universalLink;
-
-                    setTimeout(function() {
-                        window.location = storeLink;
-                    }, 500);
+                    window.location = storeLink;
                 }, 300);  // 300毫秒延遲，給 app 足夠的時間打開
             }
             
