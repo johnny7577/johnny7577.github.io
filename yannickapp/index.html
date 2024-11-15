@@ -28,7 +28,7 @@
             padding: 10px 20px;
             font-size: 16px;
             margin-top: 10px;
-            marker-end: 10px;
+            margin-bottom: 10px;
             background-color: #007BFF;
             color: white;
             border: none;
@@ -43,7 +43,6 @@
             background-color: #0056b3;
         }
         #openButton {
-            margin-top: 20px;
             background-color: #c13a36;
         }
         footer {
@@ -59,16 +58,19 @@
 <body>
     <div class="container">
         <p id="storeText" class="text">前往<span id="storeName" class="text">Store</span>查看應用程式</p>
-        <button id="storeButton" class="button">前往商店</button>
-        <button id="openButton" class="button">開啟</button>
+        <!-- <button id="storeButton" class="button" href="#" target="_self">前往商店</button> -->
+        <button id="openButton" class="button" href="#" target="_blank">開啟</button>
     </div>
 
     <footer>v1.0</footer>
     
     <script>
         window.onload = function() {
-            const isAutoRedirect = true; // 開啟網頁自動跳轉
-            var appLink = "yannickapp://app.yannick";  // 替換成你 app 的 Deeplink URL
+            const isAutoRedirect = false; // 開啟網頁自動跳轉
+            const appLink = "yannickapp://app.yannick";
+            //const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
+            const universalLink = "https://johnny7577.github.io/yannickapp";
+
             var storeLink;
 
             // 判斷使用者裝置類型
@@ -84,6 +86,10 @@
                 }
 
                 return "unknown";
+            }
+
+            function open() {
+
             }
 
             var os = getMobileOperatingSystem();
@@ -108,20 +114,24 @@
 
                 //如果 app 沒有安裝，則在300毫秒後跳轉到對應的商店
                 setTimeout(function() {
-                    window.location = storeLink;
+                    window.location = universalLink;
+
+                    setTimeout(function() {
+                        window.location = storeLink;
+                    }, 500);
                 }, 300);  // 300毫秒延遲，給 app 足夠的時間打開
             }
             
             document.getElementById("storeName").innerText = storeName;
             
             // 設置按鈕點擊事件，讓用戶手動前往商店
-            document.getElementById("storeButton").onclick = function() {
-                window.location = storeLink;
-            };
+            // document.getElementById("storeButton").onclick = function() {
+            //     window.location = storeLink;
+            // };
 
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
             document.getElementById("openButton").onclick = function() {
-                window.location = appLink;
+                window.location = universalLink;
 
                  setTimeout(function() {
                       window.location = storeLink;
