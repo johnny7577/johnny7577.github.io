@@ -63,10 +63,11 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.8</footer>
+    <footer>v1.0</footer>
     
     <script>
         window.onload = function() {
+            const isAutoRedirect = true; // 開啟網頁自動跳轉
             var appLink = "yannickapp://app.yannick";  // 替換成你 app 的 Deeplink URL
             var storeLink;
 
@@ -102,13 +103,15 @@
             }
 
             // 嘗試打開 app
-            //window.location = appLink;
+            if (isAutoRedirect) {
+                window.location = appLink;
 
-            // 如果 app 沒有安裝，則在300毫秒後跳轉到對應的商店
-            // setTimeout(function() {
-            //     window.location = storeLink;
-            // }, 300);  // 300毫秒延遲，給 app 足夠的時間打開
-
+                //如果 app 沒有安裝，則在300毫秒後跳轉到對應的商店
+                setTimeout(function() {
+                    window.location = storeLink;
+                }, 300);  // 300毫秒延遲，給 app 足夠的時間打開
+            }
+            
             document.getElementById("storeName").innerText = storeName;
             
             // 設置按鈕點擊事件，讓用戶手動前往商店
