@@ -68,7 +68,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.5</footer>
+    <footer>v1.0</footer>
     
     <script>
         window.onload = function() {
@@ -100,8 +100,9 @@
                     setTimeout(function() {
                         if (!appOpened) {
                             window.location = storeLink;
+                            appOpened = false;
                         }
-                    }, 500);
+                    }, 2000);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
