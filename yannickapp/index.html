@@ -68,9 +68,6 @@
         window.onload = function() {
             const isAutoRedirect = false; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
-            //const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
-            const universalLink = "https://johnny7577.github.io/yannickapp";
-
             var storeLink;
 
             // 判斷使用者裝置類型
@@ -114,11 +111,7 @@
 
                 //如果 app 沒有安裝，則在300毫秒後跳轉到對應的商店
                 setTimeout(function() {
-                    window.location = universalLink;
-
-                    setTimeout(function() {
-                        window.location = storeLink;
-                    }, 500);
+                     window.location = storeLink;
                 }, 300);  // 300毫秒延遲，給 app 足夠的時間打開
             }
             
@@ -131,12 +124,14 @@
 
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
             document.getElementById("openButton").onclick = function() {
-                 setTimeout(function() {
-                      window.location = storeLink;
-                }, 1000);
+                var iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = appLink;
+                document.body.appendChild(iframe);
 
-                window.location = universalLink;
-                event.preventDefault();
+                setTimeout(function() {
+                      window.location = storeLink;
+                }, 500);
             };
 
         };
