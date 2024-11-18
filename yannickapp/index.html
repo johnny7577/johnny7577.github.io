@@ -95,10 +95,11 @@
 
             // 嘗試打開 app
             function openApp() {
-                 var iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = appLink;
-                document.body.appendChild(iframe);
+                var link = document.createElement('a');
+                link.href = appLink;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
             }
 
             var os = getMobileOperatingSystem();
