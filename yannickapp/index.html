@@ -70,7 +70,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.2</footer>
+    <footer>v1.0</footer>
     
     <script>
         window.onload = function() {
@@ -93,15 +93,6 @@
                 return "unknown";
             }
 
-            // 嘗試打開 app
-            function openApp() {
-                var link = document.createElement('a');
-                link.href = appLink;
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-            }
-
             var os = getMobileOperatingSystem();
             var storeName;
 
@@ -119,7 +110,7 @@
             }
 
             if (isAutoRedirect) {
-               openApp();
+               window.location = appLink;
 
                 //如果 app 沒有安裝，則在300毫秒後跳轉到對應的商店
                 setTimeout(function() {
@@ -136,7 +127,7 @@
 
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
             document.getElementById("openButton").onclick = function() {
-                openApp();
+                window.location = appLink;
 
                 setTimeout(function() {
                       window.location = storeLink;
