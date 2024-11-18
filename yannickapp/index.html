@@ -68,7 +68,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.4</footer>
+    <footer>v1.5</footer>
     
     <script>
         window.onload = function() {
@@ -95,7 +95,7 @@
             function redirectAppOrStore() {
                 if (os === "iOS") {
                     var link = document.createElement('a');
-                    link.href = "myapp://open";
+                    link.href = appLink;
                     link.style.display = 'none';
                     document.body.appendChild(link);
                     link.click();
