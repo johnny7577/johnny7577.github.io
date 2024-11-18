@@ -110,11 +110,14 @@
             }
 
             if (isAutoRedirect) {
-               window.location = appLink;
+                var startTime = Date.now();
+                window.location = appLink;
 
                 //如果 app 沒有安裝，則在300毫秒後跳轉到對應的商店
                 setTimeout(function() {
-                     window.location = storeLink;
+                    if (Date.now() - startTime < 300) {
+                        window.location = storeLink;
+                    }
                 }, 300);  // 300毫秒延遲，給 app 足夠的時間打開
             }
             
@@ -127,10 +130,13 @@
 
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
             document.getElementById("openButton").onclick = function() {
+                var startTime = Date.now();
                 window.location = appLink;
 
                 setTimeout(function() {
-                      window.location = storeLink;
+                    if (Date.now() - startTime < 500) {
+                        window.location = storeLink;
+                    }
                 }, 500);
             };
 
