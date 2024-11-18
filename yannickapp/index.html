@@ -68,7 +68,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.1</footer>
+    <footer>v1.2</footer>
     
     <script>
         window.onload = function() {
@@ -96,13 +96,13 @@
             function redirectAppOrStore() {
                 if (os === "iOS") {
                     appOpened = false;
-                    window.location = appLink;
+                    window.location.href = appLink;
 
                     setTimeout(function() {
                         if (!appOpened) {
                             window.location = storeLink;
                         }
-                    }, 1000);
+                    }, 1500);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
