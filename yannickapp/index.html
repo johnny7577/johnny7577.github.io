@@ -94,16 +94,20 @@
 
             function redirectAppOrStore() {
                 if (os === "iOS") {
+                    let redirectTimer = setTimeout(function() {
+                        document.body.removeChild(link);
+                        window.location = storeLink;
+                    }, 500);
+
                     var link = document.createElement('a');
                     link.href = appLink;
                     link.style.display = 'none';
                     document.body.appendChild(link);
                     link.click();
 
-                    setTimeout(function() {
-                        document.body.removeChild(link);
-                        window.location = storeLink;
-                    }, 500);
+                    window.addEventListener("pagehide", function () {
+                        clearTimeout(redirectTimer);
+                    });
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
