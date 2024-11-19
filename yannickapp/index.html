@@ -102,10 +102,10 @@
                      window.location = appLink;
                     
                     setTimeout(function() {
-                        if (!appOpened || confirm(message)) {
+                        if (!appOpened || confirm("將為您引導至應用程式商店，請確認是否繼續？")) {
                             window.location = storeLink;
                         }
-                    }, 500);
+                    }, 1500);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
