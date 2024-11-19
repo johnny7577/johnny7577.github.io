@@ -66,19 +66,17 @@
     <div class="container">
         <p class="text title">點擊「開啟」啟動APP或前往應用程式商店</p>
         <button id="openButton" class="button">開啟</button>
-        <a href="https://johnny7577.github.io/yannickapp?fallbackUrl=https://play.google.com/store/apps/details?id=com.yannick.app" class="button">開啟</a>
     </div>
 
-    <footer>v1.2</footer>
+    <footer>v1.6</footer>
     
     <script>
         window.onload = function() {
             const isAutoRedirect = false; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
-            const universalLink = "https://testapp.yannick-cake.com/yannickapplink?fallbackUrl=https://play.google.com/store/apps/details?id=com.yannick.app";
+            const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
             var os = getMobileOperatingSystem();
             var storeLink;
-            let appOpened = false;
             
             // 判斷使用者裝置類型
             function getMobileOperatingSystem() {
@@ -97,14 +95,7 @@
 
             function redirectAppOrStore() {
                 if (os === "iOS") {
-                    appOpened = false;
-                    window.location.href = universalLink;
-
-                    setTimeout(function() {
-                        if (!appOpened) {
-                            window.location = storeLink;
-                        }
-                    }, 1500);
+                    window.location.href = universalLink + "?fallbackUrl=" + appLink;
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
@@ -134,8 +125,9 @@
                 // 檢查是否存在 fallbackUrl
                 const currentUrl = new URL(window.location.href);
                 const fallbackUrl = currentUrl.searchParams.get('fallbackUrl');
+                const allowedDomains = ['apps.apple.com', 'play.google.com'];
 
-                if (fallbackUrl) {
+                if (fallbackUrl && allowedDomains.some(domain => currentUrl.hostname.includes(domain))) {
                     try {
                         // 驗證 fallbackUrl 是否有效
                         new URL(fallbackUrl);
@@ -153,18 +145,11 @@
                 redirectAppOrStore();
             }
             
-
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
             document.getElementById("openButton").onclick = function() {
                 redirectAppOrStore();
             };
 
-            document.addEventListener("visibilitychange", () => {
-                if (document.visibilityState === "hidden") {
-                    console.log("visibilitychange: " + document.visibilityState);
-                    appOpened = true; // 表示用戶已跳轉到 APP
-                }
-            });
         };
     </script>
 </body>
