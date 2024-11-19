@@ -128,7 +128,7 @@
                 const fallbackUrl = currentUrl.searchParams.get('fallbackUrl');
                 const allowedDomains = ['apps.apple.com', 'play.google.com'];
 
-                if (fallbackUrl && allowedDomains.some(domain => currentUrl.hostname.includes(domain))) {
+                if (fallbackUrl && allowedDomains.some(domain => fallbackUrl.hostname.includes(domain))) {
                     try {
                         // 驗證 fallbackUrl 是否有效
                         new URL(fallbackUrl);
