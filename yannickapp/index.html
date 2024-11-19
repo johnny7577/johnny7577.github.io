@@ -78,6 +78,7 @@
             const appLink = "yannickapp://app.yannick";
             var os = getMobileOperatingSystem();
             var storeLink;
+            let appOpened = false;
             
             // 判斷使用者裝置類型
             function getMobileOperatingSystem() {
@@ -96,13 +97,14 @@
             
             function redirectAppOrStore() {
                 if (os === "iOS") {
+                    appOpened = false;
                      window.location = appLink;
                     
                     setTimeout(function() {
-                        if (confirm("將為您引導至應用程式商店，請確認是否繼續？")) {
+                        if (!appOpened || confirm("將為您引導至應用程式商店，請確認是否繼續？")) {
                             window.location = storeLink;
                         }
-                    }, 500);
+                    }, 1500);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
@@ -136,7 +138,12 @@
             document.getElementById("openButton").onclick = function() {
                 redirectAppOrStore();
             };
-            
+
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "hidden") {
+                    appOpened = true;
+                }
+            });
         };
     </script>
 </body>
