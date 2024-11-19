@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-itunes-app" content="app-id=1265001179, app-argument=yannickapp://app.yannick">
     <title>Open App or Store</title>
 
     <style>
@@ -67,7 +66,6 @@
     <div class="container">
         <p class="text title">點擊「開啟」啟動APP或前往應用程式商店</p>
         <button id="openButton" class="button">開啟</button>
-        <a href="https://testapp.yannick-cake.com/yannickapplink" style="display: none;"></a>
     </div>
 
     <footer>v1.3</footer>
@@ -76,7 +74,6 @@
         window.onload = function() {
             const isAutoRedirect = true; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
-            const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
             var os = getMobileOperatingSystem();
             var storeLink;
             
@@ -101,13 +98,11 @@
 
             function redirectAppOrStore() {
                 if (os === "iOS") {
-                    setTimeout(function() {
-                        window.location.href = appLink;
+                    window.location.href = appLink;
 
-                        setTimeout(function() {
-                            window.location = storeLink;
-                        }, 2000);
-                    }, 10);
+                    setTimeout(function() {
+                        window.location = storeLink;
+                    }, 500);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
