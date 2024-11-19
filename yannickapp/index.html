@@ -73,7 +73,7 @@
     
     <script>
         window.onload = function() {
-            const isAutoRedirect = false; // 開啟網頁自動跳轉
+            const isAutoRedirect = true; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
             const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
             var os = getMobileOperatingSystem();
@@ -96,7 +96,11 @@
 
             function redirectAppOrStore() {
                 if (os === "iOS") {
-                    window.location.href = universalLink + "?fallbackUrl=" + storeLink;
+                    var link = document.createElement('a');
+                    link.href = universalLink + "?fallbackUrl=" + storeLink;
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
