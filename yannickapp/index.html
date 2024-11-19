@@ -96,11 +96,12 @@
 
             function redirectAppOrStore() {
                 if (os === "iOS") {
-                    var link = document.createElement('a');
-                    link.href = universalLink + "?fallbackUrl=" + storeLink;
-                    link.style.display = 'none';
-                    document.body.appendChild(link);
-                    link.click();
+                    // var link = document.createElement('a');
+                    // link.href = universalLink + "?fallbackUrl=" + storeLink;
+                    // link.style.display = 'none';
+                    // document.body.appendChild(link);
+                    // link.click();
+                    window.open(universalLink + "?fallbackUrl=" + storeLink, "_self");
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
