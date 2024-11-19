@@ -98,10 +98,11 @@
             function redirectAppOrStore() {
                 if (os === "iOS") {
                     appOpened = false;
-                     window.location = appLink;
+                    window.location = appLink;
                     
                     setTimeout(function() {
-                        if (!appOpened || confirm("將為您引導至應用程式商店，請確認是否繼續？")) {
+                        if (appOpened) return;
+                        if (confirm("將為您引導至應用程式商店，請確認是否繼續？")) {
                             window.location = storeLink;
                         }
                     }, 1500);
