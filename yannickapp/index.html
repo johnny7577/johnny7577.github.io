@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,14 +69,15 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.3</footer>
+    <footer>v1.4</footer>
     
     <script>
         window.onload = function() {
-            const isAutoRedirect = true; // 開啟網頁自動跳轉
+            const isAutoRedirect = false; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
             var os = getMobileOperatingSystem();
             var storeLink;
+            let appOpened = false;
             
             // 判斷使用者裝置類型
             function getMobileOperatingSystem() {
@@ -97,11 +99,20 @@
             }
 
             function redirectAppOrStore() {
+                appOpened = false;
+
                 if (os === "iOS") {
-                    window.location.href = appLink;
+                    var link = document.createElement('a');
+                    link.href = appLink;
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
 
                     setTimeout(function() {
-                        window.location = storeLink;
+                        document.body.removeChild(link);
+                        if (!appOpened) {
+                            window.location = storeLink;
+                        }
                     }, 500);
                 } else {
                     var iframe = document.createElement('iframe');
@@ -139,7 +150,8 @@
 
             document.addEventListener("visibilitychange", () => {
                 if (document.visibilityState === "hidden") {
-                    
+                    appOpened = true;
+                    console.log('visibilitychange: ' + document.visibilityState);
                 }
             });
 
