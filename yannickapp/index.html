@@ -120,6 +120,12 @@
                 
             }
 
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "hidden") {
+                    appOpened = true;
+                }
+            });
+
             // 根據操作系統決定跳轉到 App Store 或 Play Store
             if (os === "iOS") {
                 storeLink = "https://apps.apple.com/app/1265001179";  // iOS App Store
@@ -139,12 +145,6 @@
             document.getElementById("openButton").onclick = function() {
                 redirectAppOrStore();
             };
-
-            document.addEventListener("visibilitychange", () => {
-                if (document.visibilityState === "hidden") {
-                    appOpened = true;
-                }
-            });
         };
     </script>
 </body>
