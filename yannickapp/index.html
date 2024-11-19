@@ -98,6 +98,7 @@
             function redirectAppOrStore() {
                 if (os === "iOS") {
                     appOpened = false;
+                    let startTime = Date.now();
                     
                     var link = document.createElement('a');
                     link.href = appLink;
@@ -107,10 +108,11 @@
                     
                     setTimeout(function() {
                         document.body.removeChild(link);
+                        if (Date.now() - startTime > 500) return;
                         if (!appOpened) {
                             window.location = storeLink;
                         }
-                    }, 2000);
+                    }, 500);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
