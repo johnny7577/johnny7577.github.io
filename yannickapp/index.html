@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-itunes-app" content="app-id=1265001179, app-argument=https://testapp.yannick-cake.com/yannickapplink">
     <title>Open App or Store</title>
 
     <style>
@@ -69,7 +70,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.4</footer>
+    <footer>v1.0</footer>
     
     <script>
         window.onload = function() {
@@ -102,18 +103,17 @@
                 appOpened = false;
 
                 if (os === "iOS") {
-                    var link = document.createElement('a');
-                    link.href = appLink;
-                    link.style.display = 'none';
-                    document.body.appendChild(link);
-                    link.click();
+                    let waiting = isSafari() ? 2000 : 500;
+                    let startTime = Date.now();
 
                     setTimeout(function() {
-                        document.body.removeChild(link);
-                        if (!appOpened) {
+                        let elapsedTime = Date.now() - startTime;
+                        if (!appOpened || elapsedTime < waiting) {
                             window.location = storeLink;
                         }
-                    }, 500);
+                    }, waiting);
+
+                    window.location = appLink;
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
