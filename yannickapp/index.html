@@ -96,7 +96,7 @@
 
             function redirectAppOrStore() {
                 if (os === "iOS") {
-                    window.location.href = universalLink + "?fallbackUrl=" + appLink;
+                    window.location.href = universalLink + "?fallbackUrl=" + storeLink;
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
