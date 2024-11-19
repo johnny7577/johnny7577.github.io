@@ -94,26 +94,18 @@
 
                 return "unknown";
             }
-
-            function isSafari() {
-                return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            }
-
+            
             function redirectAppOrStore() {
                 appOpened = false;
 
                 if (os === "iOS") {
-                    let waiting = isSafari() ? 2000 : 500;
-                    let startTime = Date.now();
-
+                     window.location = appLink;
+                    
                     setTimeout(function() {
-                        let elapsedTime = Date.now() - startTime;
-                        if (!appOpened || elapsedTime < waiting) {
+                        if (!appOpened || confirm(message)) {
                             window.location = storeLink;
                         }
-                    }, waiting);
-
-                    window.location = appLink;
+                    }, 500);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
@@ -151,7 +143,6 @@
             document.addEventListener("visibilitychange", () => {
                 if (document.visibilityState === "hidden") {
                     appOpened = true;
-                    console.log('visibilitychange: ' + document.visibilityState);
                 }
             });
 
