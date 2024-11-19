@@ -69,13 +69,13 @@
         <a href="https://testapp.yannick-cake.com/yannickapplink" class="button">開啟</a>
     </div>
 
-    <footer>v1.0</footer>
+    <footer>v1.1</footer>
     
     <script>
         window.onload = function() {
             const isAutoRedirect = false; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
-            const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
+            const universalLink = "https://testapp.yannick-cake.com/yannickapplink?fallbackUrl=https://play.google.com/store/apps/details?id=com.yannick.app";
             var os = getMobileOperatingSystem();
             var storeLink;
             let appOpened = false;
