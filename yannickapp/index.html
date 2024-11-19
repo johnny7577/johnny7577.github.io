@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-itunes-app" content="app-id=1265001179, app-argument=https://testapp.yannick-cake.com/yannickapplink">
+    <meta name="apple-itunes-app" content="app-id=1265001179, app-argument=yannickapp://app.yannick">
     <title>Open App or Store</title>
 
     <style>
@@ -67,14 +67,13 @@
     <div class="container">
         <p class="text title">點擊「開啟」啟動APP或前往應用程式商店</p>
         <button id="openButton" class="button">開啟</button>
-        <a href="https://testapp.yannick-cake.com/yannickapplink" class="button">開啟</a>
     </div>
 
-    <footer>v2.0</footer>
+    <footer>v1.2</footer>
     
     <script>
         window.onload = function() {
-            const isAutoRedirect = false; // 開啟網頁自動跳轉
+            const isAutoRedirect = true; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
             const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
             var os = getMobileOperatingSystem();
@@ -95,14 +94,19 @@
                 return "unknown";
             }
 
+            function isSafari() {
+                return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            }
+
             function redirectAppOrStore() {
                 if (os === "iOS") {
-                    // var link = document.createElement('a');
-                    // link.href = universalLink + "?fallbackUrl=" + storeLink;
-                    // link.style.display = 'none';
-                    // document.body.appendChild(link);
-                    // link.click();
-                    window.open(universalLink + "?fallbackUrl=" + storeLink, "_self");
+                    setTimeout(function() {
+                        window.location.href = appLink;
+
+                        setTimeout(function() {
+                            window.location = storeLink;
+                        }, 2000);
+                    }, 10);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
@@ -128,45 +132,20 @@
             }
 
 
-            document.addEventListener("visibilitychange", () => {
-                if (document.visibilityState === "hidden") {
-                    // 獲取當前的基礎 URL（不包括查詢參數）
-                    const baseUrl = window.location.origin + window.location.pathname;
-                    // 使用 history.pushState 修改網址，但保留當前的標題
-                    history.pushState({}, document.title, baseUrl);
-                }
-            });
-
+            if (isAutoRedirect) {
+                redirectAppOrStore();
+            }
 
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
             document.getElementById("openButton").onclick = function() {
                 redirectAppOrStore();
             };
 
-
-            if (os === "iOS") {
-                // 檢查是否存在 fallbackUrl
-                const currentUrl = new URL(window.location.href);
-                const fallbackUrl = currentUrl.searchParams.get('fallbackUrl');
-                const allowedDomains = ['apps.apple.com', 'play.google.com'];
-
-                if (fallbackUrl && allowedDomains.some(domain => new URL(fallbackUrl).hostname.includes(domain))) {
-                    try {
-                        // 驗證 fallbackUrl 是否有效
-                        new URL(fallbackUrl);
-
-                        // 跳轉到 fallbackUrl
-                        window.location.href = fallbackUrl;
-                        return;
-                    } catch (e) {
-                        console.error('Invalid fallbackUrl:', fallbackUrl);
-                    }
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "hidden") {
+                    
                 }
-            }
-
-            if (isAutoRedirect) {
-                redirectAppOrStore();
-            }
+            });
 
         };
     </script>
