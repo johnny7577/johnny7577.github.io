@@ -66,10 +66,10 @@
     <div class="container">
         <p class="text title">點擊「開啟」啟動APP或前往應用程式商店</p>
         <button id="openButton" class="button">開啟</button>
-        <a href="https://testapp.yannick-cake.com/yannickapplink" class="button">開啟</a>
+        <a href="https://johnny7577.github.io/yannickapp?https://play.google.com/store/apps/details?id=com.yannick.app" class="button">開啟</a>
     </div>
 
-    <footer>v1.1</footer>
+    <footer>v1.2</footer>
     
     <script>
         window.onload = function() {
@@ -127,6 +127,26 @@
             } else {
                 // 如果無法判斷，則跳轉到一個網頁
                 storeLink = "https://www.yannick.com.tw/";
+            }
+
+
+            if (os === "iOS") {
+                // 檢查是否存在 fallbackUrl
+                const currentUrl = new URL(window.location.href);
+                const fallbackUrl = currentUrl.searchParams.get('fallbackUrl');
+
+                if (fallbackUrl) {
+                    try {
+                        // 驗證 fallbackUrl 是否有效
+                        new URL(fallbackUrl);
+
+                        // 跳轉到 fallbackUrl
+                        window.location.href = fallbackUrl;
+                        return;
+                    } catch (e) {
+                        console.error('Invalid fallbackUrl:', fallbackUrl);
+                    }
+                }
             }
 
             if (isAutoRedirect) {
