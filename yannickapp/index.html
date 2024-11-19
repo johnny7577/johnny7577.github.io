@@ -75,6 +75,7 @@
         window.onload = function() {
             const isAutoRedirect = false; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
+            const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
             var os = getMobileOperatingSystem();
             var storeLink;
             let appOpened = false;
@@ -97,7 +98,7 @@
             function redirectAppOrStore() {
                 if (os === "iOS") {
                     appOpened = false;
-                    window.location.href = appLink;
+                    window.location.href = universalLink;
 
                     setTimeout(function() {
                         if (!appOpened) {
