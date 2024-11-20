@@ -70,7 +70,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.2 002</footer>
+    <footer>v1.2 003</footer>
     
     <script>
         window.onload = function() {
@@ -98,19 +98,19 @@
             function redirectAppOrStore() {
                 if (os === "iOS") {
                     appOpened = false;
-                    const now = new Date().getTime();
-                    console.log('new : ' + now);
+                    let startTime = Date.now();
+                    console.log('startTime : ' + startTime);
                     
                     window.location = appLink;
                     
                     setTimeout(function() {
-                        const elapsedTime = new Date().getTime() - now;
-                        console.log('elapsedTime : ' + elapsedTime);
+                        let elapsed = Date.now() - startTime;
+                        console.log('elapsed : ' + elapsed);
                         if (elapsedTime > 2000) return;
                         if (!appOpened) {
                             window.location = storeLink;
                         }
-                        alert('elapsedTime : ' + elapsedTime);
+                        alert('elapsed : ' + elapsed);
                     }, 500);
                 } else {
                     var iframe = document.createElement('iframe');
