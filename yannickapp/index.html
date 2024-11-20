@@ -94,6 +94,12 @@
             }
 
 
+            function isSafari() {
+                var webkit = navigator.userAgent.match(/WebKit/i);
+                return (os === "iOS") && webkit && !navigator.userAgent.match(/CriOS/i);
+            }
+
+
             // 根據操作系統決定跳轉到 App Store 或 Play Store
             if (os === "iOS") {
                 appLink.href = universalLink + "?fallbackUrl=" + fallbackUrl.ios;
@@ -132,7 +138,7 @@
             }
             
 
-            if (isAutoRedirect) {
+            if (isAutoRedirect && !isSafari()) {
                 window.location = deepLink;
                     
                 setTimeout(function() {
