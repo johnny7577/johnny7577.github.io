@@ -96,7 +96,7 @@
 
             function isSafari() {
                 var isIphone = /iPhone/.test(navigator.userAgent);
-                var isSafari = /Safari/.test(navigator.userAgent) && !/CriOS|FxiOS|OPiOS|EdgiOS|YaBrowser/.test(navigator.userAgent);
+                var isSafari = /Safari/.test(navigator.userAgent) && !/CriOS|FxiOS|OPiOS|EdgiOS/.test(navigator.userAgent);
                 var isNotWkWebView = !window.webkit || !window.webkit.messageHandlers;
                 return isIphone && isSafari && isNotWkWebView;
             }
