@@ -68,9 +68,10 @@
     <div class="container">
         <p class="text title">點擊「開啟」啟動APP或前往應用程式商店</p>
         <button id="openButton" class="button">開啟</button>
+        <a href="https://testapp.yannick-cake.com/yannickapplink">打開 App</a>
     </div>
 
-    <footer>v1.2 005</footer>
+    <footer>v1.2 006</footer>
     
     <script>
         window.onload = function() {
@@ -98,18 +99,13 @@
             function redirectAppOrStore() {
                 if (os === "iOS") {
                     appOpened = false;
-                    let startTime = Date.now();
-                    
                     window.location = appLink;
                     
                     setTimeout(function() {
-                        let elapsed = Date.now() - startTime;
-                        
-                        if (elapsedTime > 2000) return;
                         if (!appOpened) {
                             window.location = storeLink;
                         }
-                    }, 1500);
+                    }, 500);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
