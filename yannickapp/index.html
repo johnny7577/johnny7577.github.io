@@ -106,7 +106,7 @@
                     setTimeout(function() {
                         let elapsed = Date.now() - startTime;
                         console.log('elapsed : ' + elapsed);
-                        if (elapsedTime > 2000) return;
+                        if (elapsed > 2000) return;
                         if (!appOpened) {
                             window.location = storeLink;
                         }
