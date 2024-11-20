@@ -61,7 +61,7 @@
         <a id="appLink" href="#" class="button">開啟</a>
     </div>
 
-    <footer>v1.6 005</footer>
+    <footer>v1.6 006</footer>
     
     <script>
         window.onload = function() {
@@ -116,26 +116,36 @@
             //檢查是否存在 fallbackUrl
             try {
                 const currentUrl = new URL(window.location.href);
-                const fallbackUrl = currentUrl.searchParams.get('fallbackUrl');
+                const url = currentUrl.searchParams.get('fallbackUrl');
                 const allowedDomains = ['apps.apple.com', 'play.google.com'];
 
-                if (fallbackUrl && allowedDomains.some(domain => new URL(fallbackUrl).hostname.includes(domain))) {
-                    // 驗證 fallbackUrl 是否有效
-                    new URL(fallbackUrl);
-
-                    // 跳轉到 fallbackUrl
-                    window.location.href = fallbackUrl;
+                if (url && allowedDomains.some(domain => new URL(url).hostname.includes(domain))) {
+                    window.location.href = url;
                     return;
                 }
             } catch (e) {
-                console.error('Invalid fallbackUrl:', fallbackUrl);
+                console.error('Invalid fallbackUrl:', url);
             }
             
 
             if (isAutoRedirect) {
-                setTimeout(function() {
-                    appLink.click();
-                }, 500);
+                if (os === "iOS") {
+                    window.location = deepLink;
+                    
+                    setTimeout(function() {
+                        window.location = fallbackUrl.ios;
+                    }, 500);
+                } else {
+                    var iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = deepLink;
+                    document.body.appendChild(iframe);
+
+                    setTimeout(function() {
+                        document.body.removeChild(iframe);
+                        window.location = (os === "Android") ? fallbackUrl.android : fallbackUrl.other;
+                    }, 500);
+                }
             }
 
         };
