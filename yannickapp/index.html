@@ -70,11 +70,11 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.0</footer>
+    <footer>v1.2</footer>
     
     <script>
         window.onload = function() {
-            const isAutoRedirect = false; // 開啟網頁自動跳轉
+            const isAutoRedirect = true; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
             var os = getMobileOperatingSystem();
             var storeLink;
@@ -98,17 +98,13 @@
             function redirectAppOrStore() {
                 if (os === "iOS") {
                     appOpened = false;
-                    let startTime = Date.now();
+                    const now = new Date().getTime();
                     
-                    var link = document.createElement('a');
-                    link.href = appLink;
-                    link.style.display = 'none';
-                    document.body.appendChild(link);
-                    link.click();
+                    window.location = appLink;
                     
                     setTimeout(function() {
                         document.body.removeChild(link);
-                        if (Date.now() - startTime > 500) return;
+                        if (new Date().getTime() - now > 2000) return;
                         if (!appOpened) {
                             window.location = storeLink;
                         }
