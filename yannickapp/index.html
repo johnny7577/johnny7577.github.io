@@ -62,7 +62,7 @@
         <a id="appLink" href="#" class="button">開啟</a>
     </div>
 
-    <footer>v1.6 001</footer>
+    <footer>v1.6 002</footer>
     
     <script>
         window.onload = function() {
@@ -135,7 +135,12 @@
                 const allowedDomains = ['apps.apple.com', 'play.google.com'];
 
                 if (url && allowedDomains.some(domain => new URL(url).hostname.includes(domain))) {
-                    window.location.href = url;
+                    window.location = deepLink;
+
+                    setTimeout(function() {
+                        window.location = url;
+                    }, 2000);
+                    //window.location.href = url;
                     return;
                 }
             } catch (e) {
