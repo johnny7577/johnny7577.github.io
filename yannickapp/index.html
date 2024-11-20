@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-itunes-app" content="app-id=1265001179, app-argument=yannickapp://app.yannick">
     <title>Open App or Store</title>
 
     <style>
@@ -43,7 +41,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            min-width: 100px; /* 設置按鈕寬度一致 */
+            min-width: 60px; /* 設置按鈕寬度一致 */
+            text-decoration: none;
         }
         .button:hover {
             background-color: #0056b3;
@@ -67,20 +66,25 @@
 <body>
     <div class="container">
         <p class="text title">點擊「開啟」啟動APP或前往應用程式商店</p>
-        <button id="openButton" class="button">開啟</button>
-        <a href="https://testapp.yannick-cake.com/yannickapplink">打開 App</a>
+        <a id="appLink" href="#" class="button">開啟</a>
     </div>
 
-    <footer>v1.2 006</footer>
+    <footer>v1.6 002</footer>
     
     <script>
         window.onload = function() {
-            const isAutoRedirect = true; // 開啟網頁自動跳轉
-            const appLink = "yannickapp://app.yannick";
+            const isAutoRedirect = false; // 開啟網頁自動跳轉
+            const deepLink = "yannickapp://app.yannick";
+            const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
             var os = getMobileOperatingSystem();
-            var storeLink;
-            let appOpened = false;
-            
+            const fallbackUrl = {
+                ios: "https://apps.apple.com/app/1265001179",
+                android: "https://play.google.com/store/apps/details?id=com.yannick.app",
+                other: "https://www.yannick.com.tw/"
+            }
+
+            const appLink = document.getElementById("appLink");
+
             // 判斷使用者裝置類型
             function getMobileOperatingSystem() {
                 var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -95,56 +99,51 @@
 
                 return "unknown";
             }
-            
-            function redirectAppOrStore() {
-                if (os === "iOS") {
-                    appOpened = false;
-                    window.location = appLink;
-                    
-                    setTimeout(function() {
-                        if (!appOpened) {
-                            window.location = storeLink;
-                        }
-                    }, 500);
-                } else {
-                    var iframe = document.createElement('iframe');
-                    iframe.style.display = 'none';
-                    iframe.src = appLink;
-                    document.body.appendChild(iframe);
 
-                    setTimeout(function() {
-                        document.body.removeChild(iframe);
-                        window.location = storeLink;
-                    }, 500);
-                }
-                
-            }
-
-            document.addEventListener("visibilitychange", () => {
-                if (document.visibilityState === "hidden") {
-                    appOpened = true;
-                }
-            });
 
             // 根據操作系統決定跳轉到 App Store 或 Play Store
             if (os === "iOS") {
-                storeLink = "https://apps.apple.com/app/1265001179";  // iOS App Store
+                appLink.href = universalLink + "?fallbackUrl=" + fallbackUrl.ios;
             } else if (os === "Android") {
-                storeLink = "https://play.google.com/store/apps/details?id=com.yannick.app";  // Android Play Store
+                appLink.href = universalLink + "?fallbackUrl=" + fallbackUrl.android;
             } else {
-                // 如果無法判斷，則跳轉到一個網頁
-                storeLink = "https://www.yannick.com.tw/";
+                appLink.href = universalLink + "?fallbackUrl=" + fallbackUrl.other;
             }
 
+
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "hidden") {
+                    // 獲取當前的基礎 URL（不包括查詢參數）
+                    const baseUrl = window.location.origin + window.location.pathname;
+                    // 使用 history.pushState 修改網址，但保留當前的標題
+                    history.pushState({}, document.title, baseUrl);
+                }
+            });
+
+
+            //檢查是否存在 fallbackUrl
+            try {
+                const currentUrl = new URL(window.location.href);
+                const fallbackUrl = currentUrl.searchParams.get('fallbackUrl');
+                const allowedDomains = ['apps.apple.com', 'play.google.com'];
+
+                if (fallbackUrl && allowedDomains.some(domain => new URL(fallbackUrl).hostname.includes(domain))) {
+                    // 驗證 fallbackUrl 是否有效
+                    new URL(fallbackUrl);
+
+                    // 跳轉到 fallbackUrl
+                    window.location.href = fallbackUrl;
+                    return;
+                }
+            } catch (e) {
+                console.error('Invalid fallbackUrl:', fallbackUrl);
+            }
+            
 
             if (isAutoRedirect) {
-                redirectAppOrStore();
+                appLink.click();
             }
 
-            // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
-            document.getElementById("openButton").onclick = function() {
-                redirectAppOrStore();
-            };
         };
     </script>
 </body>
