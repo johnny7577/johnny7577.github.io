@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-itunes-app" content="app-id=1265001179, app-argument=yannickapp://app.yannick">
     <title>Open App or Store</title>
 
     <style>
@@ -36,22 +37,13 @@
             font-size: 16px;
             margin-top: 10px;
             margin-bottom: 10px;
-            background-color: #007BFF;
+            background-color: #c13a36;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             min-width: 60px; /* 設置按鈕寬度一致 */
             text-decoration: none;
-        }
-        .button:hover {
-            background-color: #0056b3;
-        }
-        #storeButton:hover {
-            background-color: #0056b3;
-        }
-        #openButton {
-            background-color: #c13a36;
         }
         footer {
             position: fixed;
@@ -69,11 +61,11 @@
         <a id="appLink" href="#" class="button">開啟</a>
     </div>
 
-    <footer>v1.6 002</footer>
+    <footer>v1.6 003</footer>
     
     <script>
         window.onload = function() {
-            const isAutoRedirect = false; // 開啟網頁自動跳轉
+            const isAutoRedirect = true; // 開啟網頁自動跳轉
             const deepLink = "yannickapp://app.yannick";
             const universalLink = "https://testapp.yannick-cake.com/yannickapplink";
             var os = getMobileOperatingSystem();
