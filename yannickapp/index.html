@@ -103,7 +103,6 @@
                     window.location = appLink;
                     
                     setTimeout(function() {
-                        document.body.removeChild(link);
                         if (new Date().getTime() - now > 2000) return;
                         if (!appOpened) {
                             window.location = storeLink;
