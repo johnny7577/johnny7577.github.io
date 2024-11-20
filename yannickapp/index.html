@@ -70,7 +70,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.2</footer>
+    <footer>v1.2 001</footer>
     
     <script>
         window.onload = function() {
@@ -99,11 +99,15 @@
                 if (os === "iOS") {
                     appOpened = false;
                     const now = new Date().getTime();
+                    console.log('new : ' + now);
                     
                     window.location = appLink;
                     
                     setTimeout(function() {
-                        if (new Date().getTime() - now > 2000) return;
+                        const elapsedTime = new Date().getTime() - now;
+                        console.log('elapsedTime : ' + elapsedTime);
+                        alert('elapsedTime : ' + elapsedTime);
+                        if (elapsedTime > 2000) return;
                         if (!appOpened) {
                             window.location = storeLink;
                         }
