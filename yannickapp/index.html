@@ -59,14 +59,14 @@
         <p class="text title">點擊「開啟」啟動APP或前往應用程式商店</p>
         <button id="openButton" class="button">開啟</button>
         <a href="https://testapp.yannick-cake.com/yannickapplink" class="button">開啟(iOS)</a>
-        <a href="https://johnny7577.github.io/yannickapp" class="button">開啟(Android)</a>
+        <a href="https://johnny7577.github.io/yannickapp?fallbackUrl=https://play.google.com/store/apps/details?id=com.yannick.app" class="button">開啟(Android)</a>
     </div>
 
     <footer>v1.2 001</footer>
     
     <script>
         window.onload = function() {
-            const isAutoRedirect = true; // 開啟網頁自動跳轉
+            const isAutoRedirect = false; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
             var os = getMobileOperatingSystem();
             var storeLink;
@@ -115,6 +115,29 @@
             } else {
                 // 如果無法判斷，則跳轉到一個網頁
                 storeLink = "https://www.yannick.com.tw/";
+            }
+
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "hidden") {
+                    // 獲取當前的基礎 URL（不包括查詢參數）
+                    const baseUrl = window.location.origin + window.location.pathname;
+                    // 使用 history.pushState 修改網址，但保留當前的標題
+                    history.pushState({}, document.title, baseUrl);
+                }
+            });
+
+            //檢查是否存在 fallbackUrl
+            try {
+                const currentUrl = new URL(window.location.href);
+                const url = currentUrl.searchParams.get('fallbackUrl');
+                const allowedDomains = ['apps.apple.com', 'play.google.com'];
+
+                if (url && allowedDomains.some(domain => new URL(url).hostname.includes(domain))) {
+                    window.location.href = url;
+                    return;
+                }
+            } catch (e) {
+                console.error('Invalid fallbackUrl:', url);
             }
 
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
