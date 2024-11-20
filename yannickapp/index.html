@@ -74,6 +74,7 @@
                 android: "https://play.google.com/store/apps/details?id=com.yannick.app",
                 other: "https://www.yannick.com.tw/"
             }
+            var storeLink;
 
             const appLink = document.getElementById("appLink");
 
@@ -96,10 +97,13 @@
             // 根據操作系統決定跳轉到 App Store 或 Play Store
             if (os === "iOS") {
                 appLink.href = universalLink + "?fallbackUrl=" + fallbackUrl.ios;
+                storeLink = fallbackUrl.ios;
             } else if (os === "Android") {
                 appLink.href = universalLink + "?fallbackUrl=" + fallbackUrl.android;
+                storeLink = fallbackUrl.android;
             } else {
                 appLink.href = universalLink + "?fallbackUrl=" + fallbackUrl.other;
+                storeLink = fallbackUrl.other;
             }
 
 
@@ -129,23 +133,11 @@
             
 
             if (isAutoRedirect) {
-                if (os === "iOS") {
-                    window.location = deepLink;
+                window.location = deepLink;
                     
-                    setTimeout(function() {
-                        window.location = fallbackUrl.ios;
-                    }, 500);
-                } else {
-                    var iframe = document.createElement('iframe');
-                    iframe.style.display = 'none';
-                    iframe.src = deepLink;
-                    document.body.appendChild(iframe);
-
-                    setTimeout(function() {
-                        document.body.removeChild(iframe);
-                        window.location = (os === "Android") ? fallbackUrl.android : fallbackUrl.other;
-                    }, 500);
-                }
+                setTimeout(function() {
+                    window.location = storeLink;
+                }, 500);
             }
 
         };
