@@ -70,7 +70,7 @@
         <button id="openButton" class="button">開啟</button>
     </div>
 
-    <footer>v1.2 004</footer>
+    <footer>v1.2 005</footer>
     
     <script>
         window.onload = function() {
@@ -79,31 +79,6 @@
             var os = getMobileOperatingSystem();
             var storeLink;
             let appOpened = false;
-
-            // 建立監聽器以檢測頁面是否發生變化
-            function createVisibilityObserver(fallbackUrl) {
-                const observer = new MutationObserver(() => {
-                    // 判斷頁面是否重新獲得焦點
-                    if (document.hidden === false) {
-                        observer.disconnect(); // 停止觀察
-                        window.location = fallbackUrl; // 跳轉到應用商店
-                    }
-                });
-
-                // 開始監聽
-                observer.observe(document, {
-                    attributes: true,
-                    childList: true,
-                    subtree: true
-                });
-
-                // 設置一個額外的超時機制，保險起見
-                setTimeout(() => {
-                    observer.disconnect(); // 停止觀察
-                    window.location = fallbackUrl; // 如果 MutationObserver 沒反應，保底跳轉
-                }, 2000); // 2 秒後跳轉
-            }
-
             
             // 判斷使用者裝置類型
             function getMobileOperatingSystem() {
@@ -122,25 +97,19 @@
             
             function redirectAppOrStore() {
                 if (os === "iOS") {
-                    // appOpened = false;
-                    // let startTime = Date.now();
-                    // console.log('startTime : ' + startTime);
+                    appOpened = false;
+                    let startTime = Date.now();
                     
                     window.location = appLink;
                     
-                    // setTimeout(function() {
-                    //     let elapsed = Date.now() - startTime;
-                    //     console.log('elapsed : ' + elapsed);
-                    //     if (elapsedTime > 2000) return;
-                    //     if (!appOpened) {
-                    //         window.location = storeLink;
-                    //     }
-                    //     alert('elapsed : ' + elapsed);
-                    // }, 500);
-
-                    // 使用 MutationObserver 監測頁面變化
-                    createVisibilityObserver(storeLink);
-
+                    setTimeout(function() {
+                        let elapsed = Date.now() - startTime;
+                        
+                        if (elapsedTime > 2000) return;
+                        if (!appOpened) {
+                            window.location = storeLink;
+                        }
+                    }, 1500);
                 } else {
                     var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
