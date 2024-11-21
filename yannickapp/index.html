@@ -42,7 +42,10 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            min-width: 100px; /* 設置按鈕寬度一致 */
+            min-width: 100px;
+        }
+        .link {
+            min-width: 60px;
         }
         footer {
             position: fixed;
@@ -58,32 +61,85 @@
     <div class="container">
         <p class="text title">點擊「開啟」啟動APP或前往應用程式商店</p>
         <button id="openButton" class="button">開啟</button>
-        <a href="https://testapp.yannick-cake.com/yannickapplink" class="button">開啟(iOS)</a>
-        <a href="https://johnny7577.github.io/yannickapp?fallbackUrl=https://play.google.com/store/apps/details?id=com.yannick.app" class="button">開啟(Android)</a>
+        <a id="iosLink" href="https://testapp.yannick-cake.com/yannickapplink?fallbackUrl=https://apps.apple.com/app/1265001179" class="button link">開啟</a>
     </div>
 
-    <footer>v1.2 001</footer>
+    <footer>v1.5 001</footer>
     
     <script>
+        // 判斷使用者裝置類型
+        function getMobileOperatingSystem() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            if (/android/i.test(userAgent)) {
+                return "Android";
+            }
+
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                return "iOS";
+            }
+
+            return "unknown";
+        }
+
+        function isIosSafari() {
+            var userAgent = navigator.userAgent;
+            var isIos = /iPhone|iPad|iPod/.test(userAgent);
+            var isSafari = /Safari/.test(userAgent) && !/CriOS/.test(userAgent); // 排除 Chrome
+        return isIos && isSafari;
+}
+
         window.onload = function() {
             const isAutoRedirect = false; // 開啟網頁自動跳轉
             const appLink = "yannickapp://app.yannick";
-            var os = getMobileOperatingSystem();
+            const os = getMobileOperatingSystem();
+            const fallbackUrl = {
+                ios: "https://apps.apple.com/app/1265001179",
+                android: "https://play.google.com/store/apps/details?id=com.yannick.app",
+                default: "https://www.yannick.com.tw/"
+            }
+
+            const openButton = document.getElementById("openButton");
+            const iosLink = document.getElementById("iosLink");
             var storeLink;
-            
-            // 判斷使用者裝置類型
-            function getMobileOperatingSystem() {
-                var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-                if (/android/i.test(userAgent)) {
-                    return "Android";
+            if (os === "iOS") {
+                storeLink = fallbackUrl.ios;
+                openButton.style.display = "none";
+                iosLink.style.display = "inline";
+            } else if (os === "Android") {
+                storeLink = fallbackUrl.android;
+                iosLink.style.display = "none";
+            } else {
+                storeLink = fallbackUrl.default;
+                iosLink.style.display = "none";
+            }
+
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "hidden") {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    // 避免帶有fallbackUrl的網址，在重新整理時觸發fallbackUrl導頁
+                    if (urlParams.has('fallbackUrl')) {
+                        // 獲取當前的基礎 URL（不包括查詢參數）
+                        const baseUrl = window.location.origin + window.location.pathname;
+                        // 使用 history.pushState 修改網址，但保留當前的標題
+                        history.pushState({}, document.title, baseUrl);
+                    }
                 }
+            });
 
-                if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                    return "iOS";
+            //檢查是否存在 fallbackUrl
+            try {
+                const currentUrl = new URL(window.location.href);
+                const url = currentUrl.searchParams.get('fallbackUrl');
+                const allowedDomains = ['apps.apple.com', 'play.google.com'];
+
+                if (url && allowedDomains.some(domain => new URL(url).hostname.includes(domain))) {
+                    window.location.href = url;
+                    return;
                 }
-
-                return "unknown";
+            } catch (e) {
+                console.error('Invalid fallbackUrl:', url);
             }
 
             function redirectAppOrStore() {
@@ -107,45 +163,12 @@
                 
             }
 
-            // 根據操作系統決定跳轉到 App Store 或 Play Store
-            if (os === "iOS") {
-                storeLink = "https://apps.apple.com/app/1265001179";  // iOS App Store
-            } else if (os === "Android") {
-                storeLink = "https://play.google.com/store/apps/details?id=com.yannick.app";  // Android Play Store
-            } else {
-                // 如果無法判斷，則跳轉到一個網頁
-                storeLink = "https://www.yannick.com.tw/";
-            }
-
-            document.addEventListener("visibilitychange", () => {
-                if (document.visibilityState === "hidden") {
-                    // 獲取當前的基礎 URL（不包括查詢參數）
-                    const baseUrl = window.location.origin + window.location.pathname;
-                    // 使用 history.pushState 修改網址，但保留當前的標題
-                    history.pushState({}, document.title, baseUrl);
-                }
-            });
-
-            //檢查是否存在 fallbackUrl
-            try {
-                const currentUrl = new URL(window.location.href);
-                const url = currentUrl.searchParams.get('fallbackUrl');
-                const allowedDomains = ['apps.apple.com', 'play.google.com'];
-
-                if (url && allowedDomains.some(domain => new URL(url).hostname.includes(domain))) {
-                    window.location.href = url;
-                    return;
-                }
-            } catch (e) {
-                console.error('Invalid fallbackUrl:', url);
-            }
-
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
             document.getElementById("openButton").onclick = function() {
                 redirectAppOrStore();
             };
 
-            if (isAutoRedirect) {
+            if (isAutoRedirect && !isIosSafari()) {
                 redirectAppOrStore();
             }
 
