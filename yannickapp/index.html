@@ -65,7 +65,7 @@
         <a id="iosLink" href="https://testapp.yannick-cake.com/yannickapplink?fallbackUrl=https://apps.apple.com/app/1265001179" class="button link">開啟</a>
     </div>
 
-    <footer>v1.5 001</footer>
+    <footer>v1.5 002</footer>
     
     <script>
         // 判斷使用者裝置類型
@@ -144,24 +144,11 @@
             }
 
             function redirectAppOrStore() {
-                if (os === "iOS") {
-                    window.location = appLink;
-
-                    setTimeout(function() {
-                        window.location = storeLink;
-                    }, 500);
-                } else {
-                    var iframe = document.createElement('iframe');
-                    iframe.style.display = 'none';
-                    iframe.src = appLink;
-                    document.body.appendChild(iframe);
-
-                    setTimeout(function() {
-                        document.body.removeChild(iframe);
-                        window.location = storeLink;
-                    }, 500);
-                }
+                window.location.href = appLink;
                 
+                setTimeout(function() {
+                    window.location.href = storeLink;
+                }, 500);
             }
 
             // 設置按鈕點擊事件，讓用戶手動開啟APP，當APP不存在則導頁至商店
