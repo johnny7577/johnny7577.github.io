@@ -86,8 +86,8 @@
             var userAgent = navigator.userAgent;
             var isIos = /iPhone|iPad|iPod/.test(userAgent);
             var isSafari = /Safari/.test(userAgent) && !/CriOS/.test(userAgent); // 排除 Chrome
-        return isIos && isSafari;
-}
+            return isIos && isSafari;
+        }
 
         window.onload = function() {
             const isAutoRedirect = false; // 開啟網頁自動跳轉
