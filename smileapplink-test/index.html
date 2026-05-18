@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="robots" content="noindex, nofollow">
+    <title>[TEST] 正在開啟 SmileApp...</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background: #f4fbf6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+        .container { text-align: center; max-width: 420px; width: 100%; }
+        .logo {
+            margin: 0 auto 28px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .logo img {
+            max-width: 200px; width: 100%; height: auto;
+            display: block;
+        }
+        .env-badge {
+            display: inline-block; padding: 4px 12px;
+            background: rgba(43, 167, 69, 0.1); color: #2BA745;
+            border-radius: 12px; font-size: 12px; font-weight: 600;
+            margin-bottom: 16px; letter-spacing: 1px;
+        }
+        h1 { font-size: 22px; margin-bottom: 12px; font-weight: 600; color: #2BA745; }
+        p { font-size: 15px; opacity: 0.9; line-height: 1.6; margin-bottom: 28px; color: #555; }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(43, 167, 69, 0.2);
+            border-top-color: #2BA745; border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 24px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .btn {
+            display: inline-block; padding: 14px 32px;
+            background: #2BA745; color: #fff; text-decoration: none;
+            border-radius: 28px; font-weight: 600; font-size: 16px;
+            margin: 8px; transition: transform 0.15s; min-width: 200px;
+            box-shadow: 0 4px 12px rgba(43, 167, 69, 0.25);
+        }
+        .btn:active { transform: scale(0.96); }
+        .btn-secondary { background: transparent; color: #2BA745; border: 2px solid #2BA745; box-shadow: none; }
+        .hidden { display: none !important; }
+        .tip { margin-top: 20px; font-size: 13px; opacity: 0.75; line-height: 1.5; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://www.mech-smile.com.tw/images/logo300-60.png" alt="SmileApp" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="hidden">😊</span>
+        </div>
+
+        <div class="env-badge">TEST 測試環境</div>
+
+        <div id="loading-section">
+            <div class="spinner"></div>
+            <h1>正在開啟 SmileApp（測試版）</h1>
+        </div>
+
+        <div id="action-section" class="hidden">
+            <h1>開啟 SmileApp（測試版）</h1>
+            <p id="action-desc">尚未安裝測試版 APP？請取得內部測試版本</p>
+            <a href="#" id="open-app-btn" class="btn">開啟測試 APP</a>
+            <a href="#" id="store-btn" class="btn btn-secondary">取得測試版</a>
+            <p class="tip" id="browser-tip"></p>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        'use strict';
+
+        // ============================================================
+        //  SmileApp Deep Link 中繼頁 - 測試環境 (TEST)
+        //  URL 格式：https://www.mech-smile.com.tw/smileapplink-test/{pageCode...}
+        //  範例：    https://www.mech-smile.com.tw/smileapplink-test/vouchers/partner-channels
+        // ============================================================
+
+        // ============ 1. APP 與 環境設定（測試環境）============
+        const CONFIG = {
+            env: 'TEST',
+            customScheme: 'smileapp',
+            module: 'smileapplink-test',
+
+            universalLinkHost: 'www.mech-smile.com.tw',
+
+            iosAppStoreUrl: 'https://apps.apple.com/app/1491302635',
+            androidPackage: 'tw.com.mech_smile.app',
+            androidPlayStoreUrl: 'https://play.google.com/store/apps/details?id=tw.com.mech_smile.app',
+
+            launchTimeoutIOS: 2000,
+            launchTimeoutAndroid: 2500
+        };
+
+        // ============ 2. 從目前 URL 解析 pageCode（支援多層路徑）============
+        const pathname = window.location.pathname;
+        const queryString = window.location.search;
+
+        const segments = pathname.split('/').filter(function (s) { return s.length > 0; });
+
+        let pageCode = '';
+
+        // 測試環境僅接受 /smileapplink-test/{...} 開頭
+        if (segments.length >= 2 && segments[0].toLowerCase() === CONFIG.module) {
+            // 把 smileapplink-test 後面所有層級合併成 pageCode
+            // ex: /smileapplink-test/vouchers/partner-channels -> "vouchers/partner-channels"
+            pageCode = segments.slice(1).join('/');
+        }
+
+        // ============ 3. 組裝 URL ============
+        // Custom Scheme（測試）：smileapp://smileapplink-test/{pageCode}?{query}
+        const customSchemeUrl = CONFIG.customScheme + '://' + CONFIG.module + '/' + pageCode + queryString;
+
+        // Universal Link 即目前頁面網址
+        const universalLink = window.location.href;
+
+        // Android Intent Scheme（測試）
+        const intentBody = CONFIG.module + '/' + pageCode + queryString;
+        const androidIntentUrl =
+            'intent://' + intentBody +
+            '#Intent;scheme=' + CONFIG.customScheme +
+            ';package=' + CONFIG.androidPackage +
+            ';S.browser_fallback_url=' + encodeURIComponent(CONFIG.androidPlayStoreUrl) +
+            ';end';
+
+        // ============ 4. 環境偵測 ============
+        const ua = navigator.userAgent || '';
+        const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+        const isAndroid = /android/i.test(ua);
+        const isWeixin = /MicroMessenger/i.test(ua);
+        const isLine   = /Line/i.test(ua);
+        const isFB     = /FBA[NV]|FBAN|FBAV/i.test(ua);
+        const isIG     = /Instagram/i.test(ua);
+        const isInAppBrowser = isWeixin || isLine || isFB || isIG;
+
+        // ============ 5. 嘗試開啟 APP ============
+        let appOpened = false;
+        let timer = null;
+
+        function onVisibilityChange() {
+            if (document.hidden || document.visibilityState === 'hidden') {
+                appOpened = true;
+                if (timer) { clearTimeout(timer); timer = null; }
+            }
+        }
+        document.addEventListener('visibilitychange', onVisibilityChange);
+        window.addEventListener('pagehide', onVisibilityChange);
+        window.addEventListener('blur', onVisibilityChange);
+
+        function showFallback() {
+            if (appOpened) return;
+            document.getElementById('loading-section').classList.add('hidden');
+            document.getElementById('action-section').classList.remove('hidden');
+
+            const openBtn  = document.getElementById('open-app-btn');
+            const storeBtn = document.getElementById('store-btn');
+            const tip      = document.getElementById('browser-tip');
+
+            if (isIOS) {
+                openBtn.href = customSchemeUrl;
+                storeBtn.href = CONFIG.iosAppStoreUrl;
+            } else if (isAndroid) {
+                openBtn.href = androidIntentUrl;
+                storeBtn.href = CONFIG.androidPlayStoreUrl;
+            }
+
+            if (isInAppBrowser) {
+                tip.innerText =
+                    '⚠ 偵測到您正在使用內建瀏覽器，請點選右上角「⋯」選擇「在預設瀏覽器開啟」以正常開啟測試 APP';
+            }
+        }
+
+        function tryOpenApp() {
+            if (isIOS) {
+                window.location.href = customSchemeUrl;
+                timer = setTimeout(showFallback, CONFIG.launchTimeoutIOS);
+            } else if (isAndroid) {
+                window.location.href = androidIntentUrl;
+                timer = setTimeout(showFallback, CONFIG.launchTimeoutAndroid);
+            } else {
+                // 桌機裝置：直接導頁至官網
+                window.location.replace('https://www.mech-smile.com.tw/');
+            }
+        }
+
+        if (isInAppBrowser) {
+            showFallback();
+        } else {
+            window.addEventListener('load', function () {
+                setTimeout(tryOpenApp, 100);
+            });
+        }
+
+        document.addEventListener('click', function (e) {
+            const target = e.target;
+            if (target && target.id === 'open-app-btn') {
+                if (timer) clearTimeout(timer);
+                if (isIOS) {
+                    timer = setTimeout(function () {
+                        if (!appOpened) {
+                            window.location.href = CONFIG.iosAppStoreUrl;
+                        }
+                    }, CONFIG.launchTimeoutIOS);
+                }
+            }
+        });
+    })();
+    </script>
+</body>
+</html>
