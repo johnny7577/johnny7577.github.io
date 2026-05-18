@@ -4,10 +4,20 @@
 <head>
   <meta charset="utf-8">
   <script>
-    // 把完整路徑存起來，然後跳回根目錄
-    sessionStorage.setItem('redirect', location.pathname + location.search + location.hash);
-    location.replace('/smileapplink-test/');
+    // 還原原始路徑到瀏覽器網址列
+    history.replaceState(null, '', location.pathname + location.search + location.hash);
   </script>
 </head>
-<body></body>
+<body>
+  <script>
+    // 動態載入 index.html 的內容並執行
+    fetch('/smileapplink-test/index.html')
+      .then(function(res) { return res.text(); })
+      .then(function(html) {
+        document.open();
+        document.write(html);
+        document.close();
+      });
+  </script>
+</body>
 </html>
