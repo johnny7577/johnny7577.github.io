@@ -5,7 +5,8 @@
       "namespace": "android_app",
       "package_name": "tw.com.mech_smile.app",
       "sha256_cert_fingerprints": [
-        "5D:05:33:EF:E9:BB:C6:36:C8:CC:6E:5B:FA:95:2E:30:41:4A:B6:70:ED:60:B3:A2:89:D8:5D:C6:5A:89:6A:65"
+        "5D:05:33:EF:E9:BB:C6:36:C8:CC:6E:5B:FA:95:2E:30:41:4A:B6:70:ED:60:B3:A2:89:D8:5D:C6:5A:89:6A:65",
+        "F8:84:87:8C:BD:F0:DF:93:6E:14:7C:CA:67:EF:D4:1E:08:8A:2F:42:20:BB:5A:06:0A:C0:A6:FF:F9:09:E1:E3"
       ]
     }
   }
