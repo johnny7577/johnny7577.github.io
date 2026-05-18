@@ -1,0 +1,22 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["697C453LJ2.tw.com.mechsmile.app"],
+        "components": [
+          {
+            "/": "/smileapplink/*"
+          }
+        ]
+      },
+      {
+        "appIDs": ["697C453LJ2.tttt.com.smileoil.app"],
+        "components": [
+          {
+            "/": "/smileapplink-test/*"
+          }
+        ]
+      }
+    ]
+  }
+}
